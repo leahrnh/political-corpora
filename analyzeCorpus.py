@@ -3,6 +3,8 @@ import glob
 import re
 import csv
 
+import operator
+
 
 def process_line(l, sent_lengths, word_occurrences, num_words):
     for sentence in re.split('(\.|\?|!)', l):
@@ -111,3 +113,26 @@ with open('rep_word_distribution.csv', 'wb') as csvfile:
     for key in rep_word_distribution:
         writer.writerow([key, rep_word_distribution[key]])
 
+# look at specific word usage
+comparative_freq = {} #key=word, value=num dem uses / num rep uses
+info_file = open('exclusive_words.txt', 'w')
+info_file.write("Words ONLY in Republican corpus:")
+for word in repWordOccurrences:
+    if word not in demWordOccurrences:
+        info_file.write("\n"+str(word))
+
+info_file.write("\n\nWords ONLY in Democrat corpus:")
+for word in demWordOccurrences:
+    if word not in repWordOccurrences:
+        info_file.write("\n"+str(word))
+    else:  # otherwise, compare frequency between corpora
+        comp = float(demWordOccurrences[word]) / float(repWordOccurrences[word])
+        comparative_freq[word] = comp
+
+info_file.close()
+
+print(comparative_freq)
+sorted_comp = sorted(comparative_freq.items(), key=operator.itemgetter(1))
+print(sorted_comp)
+sorted_comp.reverse()
+print(sorted_comp)
