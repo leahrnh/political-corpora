@@ -68,8 +68,6 @@ print("Republican number of words: " + str(repNumWords))
 print("Democrat number of words: " + str(demNumWords))
 print("Republican word types: " + str(len(repWordOccurrences)))
 print("Democrat word types: " + str(len(demWordOccurrences)))
-print("Republican normalized word types: " + str(float(len(repWordOccurrences)) / repNumWords))
-print("Democrat normalized word types: " + str(float(len(demWordOccurrences)) / demNumWords))
 
 # write sentence length info to csv file
 with open('dem_sent_lengths.csv', 'wb') as csvfile:

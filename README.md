@@ -5,10 +5,11 @@ This project compares Democrat and Republican debate and speech transcripts from
 
 Corpus Stats
 -------------
-The entire corpus (with no pre-processing) consists of 238,795 words.
+The entire corpus (with no pre-processing) consists of 200,048 words.
 For each sub-corpus, approximately 75% of the corpus is from debates, and 25% is from speeches.
-The Democrat corpus consists of 101,885 words, with 76,942 words from four different debates, and 24,943 words from seven different speeches.
-The Republican corpus consists of 136,910 words, with 102,218 words from four different debates, and 34,692 words from eleven different speeches.
+The Democrat corpus consists of 100,028 words, with 76,942 words from four different debates, and 23,086 words from seven different speeches.
+The Republican corpus consists of 100,020 words, with 76,748 words from four different debates, and 23,272 words from eleven different speeches.
+Post-processing, the Democrat corpus has 99,966 words, and the Republican corpus has 100,688 words.
 
 dem_sent_lengths.csv and rep_sent_lengths.csv map the length of sentences to the number of times a sentence of that length occurs.
 For example, "14,205" means that there are 205 sentences of length 14.
