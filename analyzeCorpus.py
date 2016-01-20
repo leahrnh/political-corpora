@@ -1,9 +1,11 @@
 import os
 import glob
 import re
+import csv
 
-def process_line(line, sentLengths, wordOccurrences, numWords):
-    for sentence in re.split('(\.|\?|!)', line):
+
+def process_line(l, sent_lengths, word_occurrences, num_words):
+    for sentence in re.split('(\.|\?|!)', l):
         # remove any words in parenthesis (tends to be (APPLAUSE) etc.)
         p = re.compile(r'\([A-Za-z]+\)', re.DOTALL)
         sentence = p.sub(' ', sentence)
@@ -24,20 +26,19 @@ def process_line(line, sentLengths, wordOccurrences, numWords):
 
         # record occurrence of a sentence with this number of words
         sentenceLength = len(words)
-        if sentenceLength in sentLengths:
-            sentLengths[sentenceLength] += 1
+        if sentenceLength in sent_lengths:
+            sent_lengths[sentenceLength] += 1
         else:
-            sentLengths[sentenceLength] = 1
-
+            sent_lengths[sentenceLength] = 1
 
         # record occurrence of this word
         for word in words:
-            numWords += 1
-            if word in wordOccurrences:
-                wordOccurrences[word] += 1
+            num_words += 1
+            if word in word_occurrences:
+                word_occurrences[word] += 1
             else:
-                wordOccurrences[word] = 1
-    return (sentLengths, wordOccurrences, numWords)
+                word_occurrences[word] = 1
+    return sent_lengths, word_occurrences, num_words
 
 corpusPath = os.getcwd()
 # iterate over files in the corpus
@@ -67,3 +68,46 @@ print("Republican word types: " + str(len(repWordOccurrences)))
 print("Democrat word types: " + str(len(demWordOccurrences)))
 print("Republican normalized word types: " + str(float(len(repWordOccurrences)) / repNumWords))
 print("Democrat normalized word types: " + str(float(len(demWordOccurrences)) / demNumWords))
+
+# write sentence length info to csv file
+with open('dem_sent_lengths.csv', 'wb') as csvfile:
+    writer = csv.writer(csvfile, delimiter=",")
+    writer.writerow(['Sentence length', 'Democrat Occurrences'])
+    for key in demSentLengths:
+        writer.writerow([key, demSentLengths[key]])
+
+with open('rep_sent_lengths.csv', 'wb') as csvfile:
+    writer = csv.writer(csvfile, delimiter=",")
+    writer.writerow(['Sentence length', 'Republican Occurrences'])
+    for key in repSentLengths:
+        writer.writerow([key, repSentLengths[key]])
+
+# write word occurence distribution
+dem_word_distribution = {}
+for word in demWordOccurrences:
+    num = demWordOccurrences[word]
+    if num in dem_word_distribution:
+        dem_word_distribution[num] += 1
+    else:
+        dem_word_distribution[num] = 1
+
+rep_word_distribution = {}
+for word in repWordOccurrences:
+    num = repWordOccurrences[word]
+    if num in rep_word_distribution:
+        rep_word_distribution[num] += 1
+    else:
+        rep_word_distribution[num] = 1
+
+with open('dem_word_distribution.csv', 'wb') as csvfile:
+    writer = csv.writer(csvfile, delimiter=",")
+    writer.writerow(['Word frequency', 'Number of words'])
+    for key in dem_word_distribution:
+        writer.writerow([key, dem_word_distribution[key]])
+
+with open('rep_word_distribution.csv', 'wb') as csvfile:
+    writer = csv.writer(csvfile, delimiter=",")
+    writer.writerow(['Word frequency', 'Number of words'])
+    for key in rep_word_distribution:
+        writer.writerow([key, rep_word_distribution[key]])
+
