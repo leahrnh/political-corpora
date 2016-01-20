@@ -8,7 +8,7 @@ def process_line(line, sentLengths, wordOccurrences, numWords):
         p = re.compile(r'\([A-Za-z]+\)', re.DOTALL)
         sentence = p.sub(' ', sentence)
 
-        # remove anything at the beginning of a sentence with all caps and colon. Ex. TRUMP:
+        # remove anything at the beginning of a sentence with all caps and colon. Ex. TRUMP: or AUDIENCE MEMBERS:
         p = re.compile(r'^[A-Z]+:', re.DOTALL)
         sentence = p.sub(' ', sentence)
 
@@ -29,6 +29,7 @@ def process_line(line, sentLengths, wordOccurrences, numWords):
         else:
             sentLengths[sentenceLength] = 1
 
+
         # record occurrence of this word
         for word in words:
             numWords += 1
@@ -36,7 +37,7 @@ def process_line(line, sentLengths, wordOccurrences, numWords):
                 wordOccurrences[word] += 1
             else:
                 wordOccurrences[word] = 1
-        return (sentLengths, wordOccurrences, numWords)
+    return (sentLengths, wordOccurrences, numWords)
 
 corpusPath = os.getcwd()
 # iterate over files in the corpus
